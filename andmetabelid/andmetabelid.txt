@@ -1,0 +1,1 @@
+CREATE TABLE `if20_kaarel_eel_3`.`nonsense` ( `id` INT(4) NOT NULL AUTO_INCREMENT , `nonsenseidea` VARCHAR(256) NOT NULL , `deleted` DATETIME NULL , PRIMARY KEY (`id`, `deleted`)) ENGINE = InnoDB;
