@@ -4,27 +4,7 @@
   //kui kasutaja on vormis andmeid saatnud, siis salvestame andmebaasi
   //isset kontrollib kas tal on väärtus.kui on saanud väärtuse "_POST" käest, 
   $database = "if20_kaarel_eel_3";
-  if(isset($_POST["submitnonsense"])){
-	  //== on tõene ja != on mitte tõene (nt ei ole tühi ehk !empty)
-	  if(!empty($_POST["nonsense"])){
-		  //andmebaasi lisamine
-		  //loome andmebaasi ühenduse
-		  $conn = new mysqli($serverhost, $serverusername, $serverpassword, $database);
-		  //valmistame ette SQL käsu
-		  //vaja kuhugi minna smt conn->
-		  $stmt = $conn->prepare("INSERT INTO nonsense (nonsenseidea) VALUES(?)");
-		  //saab lisada ka delete koht sulgudesse (nagu nonsensidea)
-		  echo $conn->error;
-		  //info serverisse 2te tüüpi infot; tekst, arv või murdarv ja pärisväärtus. 
-		  //s- string e tekst, i -integer e arv ja d - decimal ehk murdarv
-		  $stmt->bind_param("s", $_POST["nonsense"]);
-		  $stmt->execute();
-		  //käsk ja ühendus kinni
-		  $stmt->close();
-		  $conn->close();
-		  
-	  }
-  }
+ 
   
   //loeme andmebaasist
   $nonsensehtml= "";
@@ -147,21 +127,7 @@
   <p>See veebileht on loodud õppetöö käigus ning ei sisalda mingit tõsiseltvõetavat sisu!</p>
   <p>Leht on loodud veebiprogrammeerimise kursusel <a href="http://www.tlu.ee">Tallinna Ülikooli</a> Digitehnoloogia
     instituudis</p>
-  <p>Lehe avamise aeg:
-    <?php echo $weekdayNamesET[$weekdaynow - 1] .", " .$fulltimenow .", Semestri algusest on möödunud " .$fromsemesterstartdays ." päeva"; ?>.
-    <?php echo "Parjasti on " .$partofday ."."; ?></p>
-    <?php echo  $semesterstarted; ?></p>
-    <?php echo "Õppetööd on jäänud " .$totaldaysleft ." päeva"; ?></p>
-    <?php echo "Semestri õppetööst on tehtud " .$percentagecompleted ."%"; ?></p>
-	<hr>
-	<?php echo $imghtml; ?>
-    <hr>
-	<form method="POST">
-	<label>Sisesta oma tänane mõttetu mõte!</label>
-	<input type="text" name="nonsense" placeholder="mõttekoht">
-	<input type="submit" value="Saada ära!" name="submitnonsens">
-	</form>
-	<hr>
+ 
 	<?php echo $nonsensehtml; ?>
 </body>
 </html>

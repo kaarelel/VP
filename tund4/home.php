@@ -70,7 +70,7 @@
   foreach ($allfiles as $file){
      //how to check if this is a image/jpeg
      $fileinfo = getImagesize("../vp_pics/" .$file);	 
-     if(in_array($fileinfo ["mime"], $picfiletypes) == true){
+     if(in_array($fileinfo["mime"], $picfiletypes) == true){
 	     array_push($allpicfiles, $file);
 	  }
 		 //in_array "massivide kontroll", kontrollib kas esimene asi on olemas massiivis

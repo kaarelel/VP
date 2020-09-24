@@ -2,6 +2,7 @@
 //loeme andmebaasi login ifo muutujad
   require("../../../config.php");
   //kui kasutaja on vormis andmeid saatnud, siis salvestame andmebaasi
+ 
   $database = "if20_kaarel_eel_3";
     
   //loeme andmebaasist

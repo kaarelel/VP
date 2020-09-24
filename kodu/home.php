@@ -1,49 +1,4 @@
 <?php
-  //loeme andmebaasi login info muutujad
-  require("../../../config.php");
-  //kui kasutaja on vormis andmeid saatnud, siis salvestame andmebaasi
-  //isset kontrollib kas tal on väärtus.kui on saanud väärtuse "_POST" käest, 
-  $database = "if20_kaarel_eel_3";
-  if(isset($_POST["submitnonsense"])){
-	  //== on tõene ja != on mitte tõene (nt ei ole tühi ehk !empty)
-	  if(!empty($_POST["nonsense"])){
-		  //andmebaasi lisamine
-		  //loome andmebaasi ühenduse
-		  $conn = new mysqli($serverhost, $serverusername, $serverpassword, $database);
-		  //valmistame ette SQL käsu
-		  //vaja kuhugi minna smt conn->
-		  $stmt = $conn->prepare("INSERT INTO nonsense (nonsenseidea) VALUES(?)");
-		  //saab lisada ka delete koht sulgudesse (nagu nonsensidea)
-		  echo $conn->error;
-		  //info serverisse 2te tüüpi infot; tekst, arv või murdarv ja pärisväärtus. 
-		  //s- string e tekst, i -integer e arv ja d - decimal ehk murdarv
-		  $stmt->bind_param("s", $_POST["nonsense"]);
-		  $stmt->execute();
-		  //käsk ja ühendus kinni
-		  $stmt->close();
-		  $conn->close();
-		  
-	  }
-  }
-  
-  //loeme andmebaasist
-  $nonsensehtml= "";
-  $conn = new mysqli($serverhost, $serverusername, $serverpassword, $database);
-  $stmt = $conn->prepare("SELECT nonsenseidea FROM nonsense");
-  echo $conn->error;
-  //seome tulemuse mingi muutujaga
-  //bind = saada/anna
-  $stmt->bind_result($nosensefromdb);
-  $stmt->execute();
-  //võtan, kuni on
-  //while = tee midagi kuni juhtub midagi.. 
-  while($stmt->fetch()){
-	  //iga nonsens jaoks teeme <p>mõte</p>
-	   $nonsensehtml .= "<p>" .$nonsensefromdb ."</p>";
-  }
-  $stmt->close();
-  $conn->close();
-  //ongi andmebaasist loetud
   
   $username = "Kaarel Eelmäe";
   $fulltimenow = date("d.M.Y. H:i:s");
@@ -115,7 +70,7 @@
   foreach ($allfiles as $file){
      //how to check if this is a image/jpeg
      $fileinfo = getImagesize("../vp_pics/" .$file);	 
-     if(in_array($fileinfo ["mime"], $picfiletypes) == true){
+     if(in_array($fileinfo["mime"], $picfiletypes) == true){
 	     array_push($allpicfiles, $file);
 	  }
 		 //in_array "massivide kontroll", kontrollib kas esimene asi on olemas massiivis
@@ -132,21 +87,35 @@
   //$i ++;
   $imghtml = "";
   $picnum = mt_rand(0, ($piccount - 1));
-  for($i = 0; $i < $piccount; $i ++){
+  //for($i = 0; $i < $piccount; $i ++){
 	  //<img src="../IMG/vp_banner.png" alt="alt tekst">
 	  //jutumärgid jutumärkides saab kirjutada ülakomaga
-     $imghtml .= '<img src="../vp_pics/' .$allpicfiles[$i] .'" ';
-	 $imghtml .= 'alt="Tallinna Ülikool">';
-  }
-	  
+     //$imghtml 
+	 //
+  $imghtml .= '<img src="../vp_pics/' .$allpicfiles[mt_rand(0, ($piccount - 1))] .'" ';
+  $imghtml .= 'alt="Tallinna Ülikool">';
   require("header.php");
+  ////<p><a href="list.php">Mõtete näitamine</a> ja lisada ka teine "leht on loodud veb.prog. kursusel. ja lehe avamise aja vahele. Saab 2 lehte kuvada. "allpicfiles.
+  //<ul> 
+   //<li><a href="home.php">Avalehele</a></li>
+//</ul>	
+//<p><a href="kirjutatud_m6tted.php">Mõtete lisamine</a> / <a href="mõtteid.php">Mõtete näitamine</a>
+// <ul> 
 ?>
 
-  <img src="../IMG/vp_banner.png" alt="Veebiprogrammeerimise kuruse bänner">
+  <img src="../IMG/vp_banner.png" alt="Veebiprogrammeerimise kursuse bänner">
   <h1><?php echo $username; ?> programmeerib veebi</h1>
   <p>See veebileht on loodud õppetöö käigus ning ei sisalda mingit tõsiseltvõetavat sisu!</p>
   <p>Leht on loodud veebiprogrammeerimise kursusel <a href="http://www.tlu.ee">Tallinna Ülikooli</a> Digitehnoloogia
     instituudis</p>
+	<ul>
+	  <li><a href="mõtteid.php">Mõtete lisamine</a></li>
+      <li><a href="kirjutatud_m6tted.php">Mõtete näitamine</a></li>
+      <li><a href="listfilms.php">Filmiinfo näitamine</a></li>
+      <li><a href="addfilms.php">Filmiinfo lisamine</a></li>
+    <li><a href="kasutaja.php">Sisselogimine</a></li>
+   </ul>	
+   <!-- kommentaar -->
   <p>Lehe avamise aeg:
     <?php echo $weekdayNamesET[$weekdaynow - 1] .", " .$fulltimenow .", Semestri algusest on möödunud " .$fromsemesterstartdays ." päeva"; ?>.
     <?php echo "Parjasti on " .$partofday ."."; ?></p>
@@ -155,13 +124,6 @@
     <?php echo "Semestri õppetööst on tehtud " .$percentagecompleted ."%"; ?></p>
 	<hr>
 	<?php echo $imghtml; ?>
-    <hr>
-	<form method="POST">
-	<label>Sisesta oma tänane mõttetu mõte!</label>
-	<input type="text" name="nonsense" placeholder="mõttekoht">
-	<input type="submit" value="Saada ära!" name="submitnonsens">
-	</form>
-	<hr>
-	<?php echo $nonsensehtml; ?>
+    
 </body>
 </html>
